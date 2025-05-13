@@ -163,10 +163,12 @@
       if(m10dungeonRuns > 25) {
         document.getElementById('m10').innerText = `Caga nisso `;
         document.getElementById('m12').innerText = `tás fodido`;
+      } else {
+        document.getElementById('m10').innerText = `Thats ${m10dungeonRuns} +10 runs. (16 per timed run)`;
+        document.getElementById('m12').innerText = `or ${m12dungeonRuns} +12 runs. (20 per timed run)`;
       }
 
-      document.getElementById('m10').innerText = `Thats ${m10dungeonRuns} +10 runs. (16 per timed run)`;
-      document.getElementById('m12').innerText = `or ${m12dungeonRuns} +12 runs. (20 per timed run)`;
+      
     }
   </script>
 </body>
