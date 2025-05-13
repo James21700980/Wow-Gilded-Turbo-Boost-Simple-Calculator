@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Simple Gilded Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      background-color: #f5f5f5;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1em;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>Simple Gilded Calculator</h2>
+  <input type="number" id="field1" placeholder="Enter Weathered Crest Amount" />
+  <input type="number" id="field2" placeholder="Enter Carved Crest Amount" />
+  <input type="number" id="field3" placeholder="Enter Runed Crest Amount" />
+  <button onclick="calculate()">Calculate</button>
+
+  <div id="weathered result"></div>
+  <div id="runed result"></div>
+  <div id="gilded result"></div>
+  <div id="result"></div>
+
+  <script>
+    function calculate() {
+      const weathered = parseInt(document.getElementById('field1').value) || 0;
+      const runed = parseInt(document.getElementById('field2').value) || 0;
+      const gilded = parseInt(document.getElementById('field3').value) || 0;
+
+      const carvedResult = Math.floor(weathered/45);
+      const runedResult = Math.floor( (carvedResult*15 +runed)/45);
+      const giledResult = Math.floor( (runedResult*15 +gilded)/45);
+      const result = giledResult * 15;
+
+    
+
+      document.getElementById('weathered result').innerText = `You have ${carvedResult} Satchel of Carved.`;
+      document.getElementById('runed result').innerText = `You have ${runedResult} Satchel of Runed.`;
+      document.getElementById('gilded result').innerText = `You have ${giledResult} Satchel of Gilded.`;
+      document.getElementById('result').innerText = `You have ${result} Gilded from trading.`;
+    }
+  </script>
+</body>
+</html>
