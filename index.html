@@ -160,6 +160,11 @@
       const m10dungeonRuns = Math.ceil(neededGilded / 16)
       const m12dungeonRuns = Math.ceil(neededGilded / 20)
 
+      if(m10dungeonRuns > 25) {
+        document.getElementById('m10').innerText = `Caga nisso `;
+        document.getElementById('m12').innerText = `tás fodido`;
+      }
+
       document.getElementById('m10').innerText = `Thats ${m10dungeonRuns} +10 runs. (16 per timed run)`;
       document.getElementById('m12').innerText = `or ${m12dungeonRuns} +12 runs. (20 per timed run)`;
     }
