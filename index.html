@@ -4,62 +4,164 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Simple Gilded Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
+      font-family: 'Inter', sans-serif;
+      background-color: #eaeaea;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       max-width: 400px;
-      margin: auto;
-      background-color: #f5f5f5;
+      width: 100%;
     }
 
     h2 {
       text-align: center;
+      margin-bottom: 20px;
+      color: #333;
     }
 
-    input, button {
+    input[type="number"], button {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin-top: 10px;
       font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
     }
 
-    #result {
-      margin-top: 20px;
+    button {
+      background-color: #007bff;
+      color: white;
       font-weight: bold;
-      text-align: center;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .radio-group {
+      margin: 20px 0;
+    }
+
+    .radio-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95em;
+      color: #333;
+    }
+
+    .results {
+      margin-top: 20px;
+      background-color: #f7f7f7;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    .results div {
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
-  <h2>Simple Gilded Calculator</h2>
-  <input type="number" id="field1" placeholder="Enter Weathered Crest Amount" />
-  <input type="number" id="field2" placeholder="Enter Carved Crest Amount" />
-  <input type="number" id="field3" placeholder="Enter Runed Crest Amount" />
-  <button onclick="calculate()">Calculate</button>
+  <div class="container">
+    <h2>Gilded Crest Calculator</h2>
 
-  <div id="weathered result"></div>
-  <div id="runed result"></div>
-  <div id="gilded result"></div>
-  <div id="result"></div>
+    <input type="number" id="field1" placeholder="Weathered Crest Amount" />
+    <input type="number" id="field2" placeholder="Carved Crest Amount" />
+    <input type="number" id="field3" placeholder="Runed Crest Amount" />
+    <input type="number" id="field4" placeholder="Gilded Crest Amount" />
+
+    <div class="radio-group">
+      <label><input type="radio" name="upgradeOption" value="all" checked /> Full Upgrade (All)</label>
+      <label><input type="radio" name="upgradeOption" value="cyrce" /> Cyrce Build (15 Slots)</label>
+      <label><input type="radio" name="upgradeOption" value="cyrce2h" /> Cyrce 2H Build (14 Slots)</label>
+    </div>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <div class="results">
+      <div id="weathered result"></div>
+      <div id="carved result"></div>
+      <div id="runed result"></div>
+      <div id="result"></div>
+      <div id="All" style="display: none;"></div>
+      <div id="All-Cyrce" style="display: none;"></div>
+      <div id="All-Cyrce-2h" style="display: none;"></div>
+      <div id="m10"></div>
+      <div id="m12"></div>
+    </div>
+  </div>
 
   <script>
     function calculate() {
       const weathered = parseInt(document.getElementById('field1').value) || 0;
-      const runed = parseInt(document.getElementById('field2').value) || 0;
-      const gilded = parseInt(document.getElementById('field3').value) || 0;
+      const carved = parseInt(document.getElementById('field2').value) || 0;
+      const runed = parseInt(document.getElementById('field3').value) || 0;
+      const gilded = parseInt(document.getElementById('field4').value) || 0;
 
-      const carvedResult = Math.floor(weathered/45);
-      const runedResult = Math.floor( (carvedResult*15 +runed)/45);
-      const giledResult = Math.floor( (runedResult*15 +gilded)/45);
+      const carvedResult = Math.floor(weathered / 45);
+      const runedResult = Math.floor((carvedResult * 15 + carved) / 45);
+      const giledResult = Math.floor((runedResult * 15 + runed) / 45);
       const result = giledResult * 15;
 
-    
-
-      document.getElementById('weathered result').innerText = `You have ${carvedResult} Satchel of Carved.`;
-      document.getElementById('runed result').innerText = `You have ${runedResult} Satchel of Runed.`;
-      document.getElementById('gilded result').innerText = `You have ${giledResult} Satchel of Gilded.`;
+      document.getElementById('weathered result').innerText = `You have ${carvedResult} Satchel(s) of Carved.`;
+      document.getElementById('carved result').innerText = `You have ${runedResult} Satchel(s) of Runed.`;
+      document.getElementById('runed result').innerText = `You have ${giledResult} Satchel(s) of Gilded.`;
       document.getElementById('result').innerText = `You have ${result} Gilded from trading.`;
+
+      const AllResult = 480 - (result + gilded);
+      const fifteenslotResult = 450 - (result + gilded);
+      const fourteenslotResult = 420 - (result + gilded);
+
+      // Hide all results first
+      document.getElementById('All').style.display = 'none';
+      document.getElementById('All-Cyrce').style.display = 'none';
+      document.getElementById('All-Cyrce-2h').style.display = 'none';
+
+      const selectedOption = document.querySelector('input[name="upgradeOption"]:checked').value;
+
+      if (selectedOption === 'all') {
+        document.getElementById('All').innerText = `You need to farm ${AllResult} Gilded for full upgrade.`;
+        document.getElementById('All').style.display = 'block';
+      } else if (selectedOption === 'cyrce') {
+        document.getElementById('All-Cyrce').innerText = `You need to farm ${fifteenslotResult} Gilded for Cyrce build (15 slots).`;
+        document.getElementById('All-Cyrce').style.display = 'block';
+      } else if (selectedOption === 'cyrce2h') {
+        document.getElementById('All-Cyrce-2h').innerText = `You need to farm ${fourteenslotResult} Gilded for Cyrce 2H build (14 slots).`;
+        document.getElementById('All-Cyrce-2h').style.display = 'block';
+      }
+
+      let neededGilded = 0;
+
+      if (selectedOption === 'all') {
+        neededGilded = AllResult;
+      } else if (selectedOption === 'cyrce') {
+        neededGilded = fifteenslotResult;
+      } else if (selectedOption === 'cyrce2h') {
+       neededGilded = fourteenslotResult;
+      }
+
+      const m10dungeonRuns = Math.ceil(neededGilded / 16)
+      const m12dungeonRuns = Math.ceil(neededGilded / 20)
+
+      document.getElementById('m10').innerText = `Thats ${m10dungeonRuns} +10 runs. (16 per timed run)`;
+      document.getElementById('m12').innerText = `or ${m12dungeonRuns} +12 runs. (20 per timed run)`;
     }
   </script>
 </body>
